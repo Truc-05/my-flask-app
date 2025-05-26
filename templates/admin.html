@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="mb-4">Xin chào {{ name }} 👨‍🏫</h2>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger mb-4">Đăng xuất</a>
+
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabNotify">📢 Thông báo</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabLecture">📚 Bài giảng</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabAttendance">📋 Điểm danh</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabImages">📷 Hình ảnh</button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+
+            <!-- Tab 1: Thông báo -->
+            <div class="tab-pane fade show active" id="tabNotify">
+                <form method="post">
+                    <textarea name="note" class="form-control mb-3" rows="3" placeholder="Nhập nội dung thông báo..."
+                        required></textarea>
+                    <button type="submit" class="btn btn-primary">Gửi thông báo</button>
+                </form>
+                <ul class="list-group mt-3">
+                    {% for n in notes %}
+                    <li class="list-group-item">{{ n }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Tab 2: Bài giảng -->
+            <div class="tab-pane fade" id="tabLecture">
+                <form method="post" enctype="multipart/form-data">
+                    <input type="file" name="file" class="form-control mb-3" required>
+                    <button type="submit" class="btn btn-success">Upload bài giảng</button>
+                </form>
+                <ul class="list-group mt-3">
+                    {% for f in files %}
+                    <li class="list-group-item">
+                        <a href="{{ url_for('uploaded_file', filename=f) }}" target="_blank">{{ f }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Tab 3: Điểm danh -->
+            <div class="tab-pane fade" id="tabAttendance">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Thời gian</th>
+                                <th>Tên</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in attendance %}
+                            <tr>
+                                <td>{{ record[0] }}</td>
+                                <td>{{ record[1] }}</td>
+                                <td>{{ record[2] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 4: Hình ảnh -->
+            <div class="tab-pane fade" id="tabImages">
+                <div class="row">
+                    {% for img in images %}
+                    <div class="col-md-3 mb-3">
+                        <div class="card shadow-sm">
+                            <img src="{{ url_for('received_file', filename=img) }}" class="card-img-top"
+                                alt="Ảnh điểm danh">
+                            <div class="card-body">
+                                <p class="card-text text-center">{{ img }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

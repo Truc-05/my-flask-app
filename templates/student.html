@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="mb-4">Xin chào {{ name }} 🎓</h2>
+        <h2 class="mb-4">MSSV: {{ session['user'] }} 🎓</h2>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger mb-4">Đăng xuất</a> <br>
+        <h5>Hệ Thống Nhúng Và Mạng Không Dây</h5>
+        <h5>Giảng viên: Đặng Lê Bảo Chương</h5>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">📢 Thông báo mới</div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for n in notes %}
+                            <li class="list-group-item">{{ n }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-success text-white">📚 Bài giảng tải về</div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for f in files %}
+                            <li class="list-group-item">
+                                <a href="{{ url_for('uploaded_file', filename=f) }}" target="_blank">{{ f }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
